@@ -1,6 +1,6 @@
 extName: SumBot
 extDescription: >-
-  SumBot, web sayfası içeriğini veya YouTube transkriptlerini çıkarıp işleyerek tercih ettiğiniz yapay zeka sohbet botuna gönderir. Özel komutlar oluşturun, tam sayfa içeriğini çıkarın ve tek bir tıklama ile anında özetler, analizler veya diğer yapay zeka destekli içgörüler elde edin.
+  Web sayfalarını ve YouTube videolarını özetlemek için yapay zeka botlarına gönderir.
 optionsTitle: SumBot Ayarları
 sendingContentMessage: İçerik gönderiliyor...
 scrollToTop: Yukarı kaydır

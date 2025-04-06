@@ -1,6 +1,6 @@
 extName: SumBot
 extDescription: >-
-  SumBot extracts and processes web page content or YouTube transcripts, sending them to your preferred AI chatbot. Create custom commands, extract full page content, and get instant summaries, analyses, or any other AI-powered insights with just one click.
+  Send web pages and YouTube videos to AI chatbots for instant summaries and insights.
 optionsTitle: SumBot Options
 sendingContentMessage: Sending content...
 scrollToTop: Scroll to top
