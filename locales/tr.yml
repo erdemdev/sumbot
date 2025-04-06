@@ -93,7 +93,7 @@ maxCharactersExceeded: 'Maksimum karakter sınırı (32) aşıldı'
 htmlVariableInfoPopup: HTML değişkeni, sayfanın ham HTML içeriğini içerir. Bu değişkeni kullanan komutlar, seçim bağlam menüsünde görünmeyecektir.
 fullPageContentVariableInfoPopup: Sayfanın başlığı ve tüm görünür metni dahil olmak üzere tam sayfa içeriğini içerir. Bu değişkeni kullanan komutlar, seçim bağlam menüsünde görünmeyecektir.
 buyMeCoffee: Kahve Ismarla
-supportMe: Beni Destekle
+supportMe: Destek Ol
 generateTodoList: Yapılacaklar Listesi Oluştur
 generateTodoListPrompt: >-
   Aşağıdaki metin için $1 dilinde bir yapılacaklar listesi oluştur: $2
