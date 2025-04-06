@@ -54,7 +54,8 @@ export async function generatePrompt(
     .replace(/{{title}}/g, data.title || '')
     .replace(/{{timestamp}}/g, data.timestamp || '')
     .replace(/{{url}}/g, data.url || '')
-    .replace(/{{html}}/g, data.rawHtml || '');
+    .replace(/{{html}}/g, data.rawHtml || '')
+    .replace(/{{fullPageContent}}/g, data.fullPageContent || '');
 
   // Then, replace user-defined variables
   const userVariables = await getStorageItemSafe(STORAGE_KEYS.USER_GENERATED_VARIABLES);

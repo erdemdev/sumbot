@@ -41,6 +41,7 @@ export async function extractText(): Promise<ExtractedContent> {
 type GetTextFromDocResult = {
   content: string;
   rawHtml: string;
+  fullPageContent?: string;
 };
 
 function getTextFromDoc(): GetTextFromDocResult {
@@ -141,8 +142,12 @@ function getTextFromDoc(): GetTextFromDocResult {
   // Get the HTML of the visible content
   const rawHtml = visibleHtmlClone.outerHTML;
 
+  // Get the full page content (title + all visible text)
+  const fullPageContent = `Title: ${document.title}\n\nContent:\n${visibleHtmlClone.textContent?.replace(/\s+/g, ' ').trim() || ''}`;
+
   return {
     content,
     rawHtml,
+    fullPageContent,
   };
 }

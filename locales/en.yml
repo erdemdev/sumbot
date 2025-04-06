@@ -92,11 +92,9 @@ commandsInfoPopup: Commands can be assigned as default actions for the extension
 processing: Processing
 maxCharactersExceeded: 'Maximum character limit (32) exceeded'
 htmlVariableInfoPopup: The HTML variable contains the raw HTML of the page. Commands using this variable will not appear in the selection context menu.
+fullPageContentVariableInfoPopup: Contains the full page content including title and all visible text from the page. Commands using this variable will not appear in the selection context menu.
 buyMeCoffee: Buy Me A Coffee
 supportMe: Support Me
 generateTodoList: Generate To-Do List
 generateTodoListPrompt: >-
   Generate a to-do list for the following text in $1: $2
-extractJsonData: Extract JSON Data
-extractJsonDataPrompt: >-
-  Extract content-related data from the following html in $1 and convert to JSON: $2

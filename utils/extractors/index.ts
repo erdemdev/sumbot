@@ -7,4 +7,5 @@ export interface ExtractedContent {
   url: string;
   title?: string;
   rawHtml?: string;
+  fullPageContent?: string;
 }

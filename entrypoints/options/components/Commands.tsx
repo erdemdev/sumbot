@@ -167,7 +167,7 @@ function Commands({
   };
 
   // Get all available variables (default + user-defined)
-  const defaultVariables = ['content', 'title', 'url', 'timestamp', 'html'];
+  const defaultVariables = ['content', 'title', 'url', 'timestamp', 'html', 'fullPageContent'];
   const allVariables = [...defaultVariables, ...Object.keys(userVariables)];
 
   return (
@@ -347,6 +347,15 @@ function Commands({
                             <InfoPopup
                               className="-my-1 translate-y-1"
                               content={i18n.t('htmlVariableInfoPopup')}
+                              size="small"
+                            />
+                          </span>
+                        )}
+                        {variable === 'fullPageContent' && (
+                          <span className="ml-1">
+                            <InfoPopup
+                              className="-my-1 translate-y-1"
+                              content={i18n.t('fullPageContentVariableInfoPopup')}
                               size="small"
                             />
                           </span>

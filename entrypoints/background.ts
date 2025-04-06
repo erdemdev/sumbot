@@ -213,8 +213,11 @@ async function createDynamicContextMenus(): Promise<void> {
       // Skip commands without names or prompts
       if (!command.name || !command.prompt) continue;
 
-      // For selected text context - only show page commands and exclude commands with HTML variables
-      if (command.context === 'page' && !command.prompt.includes('{{html}}')) {
+      // For selected text context - only show page commands and exclude commands with HTML or fullPageContent variables
+      if (
+        command.context === 'page' &&
+        !['{{html}}', '{{fullPageContent}}'].some(variable => command.prompt.includes(variable))
+      ) {
         browser.contextMenus.create({
           id: `selection-${commandId}`,
           title: command.name,

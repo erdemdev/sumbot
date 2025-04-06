@@ -139,13 +139,6 @@ export const DEFAULT_COMMANDS = {
       },
     ],
   },
-  extractData: {
-    name: i18n.t('extractJsonData'),
-    prompt: i18n.t('extractJsonDataPrompt', ['{{language}}', '{{html}}']),
-    context: 'page',
-    model: 'Gemini',
-    removable: true,
-  },
   summarizeText: {
     name: i18n.t('defaultCommandPage'),
     prompt: i18n.t('summarizeTextPrompt', ['{{language}}', '{{title}}', '{{content}}']),
