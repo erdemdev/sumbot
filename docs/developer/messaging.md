@@ -7,7 +7,7 @@ This document outlines how messaging works between different parts of our extens
 The messaging system is configured in `utils/messaging.ts`:
 
 ```typescript
-import { defineExtensionMessaging } from '@webext-core/messaging';
+import { defineExtensionMessaging } from "@webext-core/messaging";
 
 interface ProtocolMap {
   toggleProcessingUI(isProcessing: boolean): void;
@@ -24,7 +24,7 @@ Messages can be sent to specific tabs by providing a `tabId`:
 
 ```typescript
 // Send message to a specific tab
-await sendMessage('toggleProcessingUI', isProcessing, tabId && { tabId });
+await sendMessage("toggleProcessingUI", isProcessing, tabId && { tabId });
 ```
 
 Example from `setIconState`:
@@ -33,11 +33,11 @@ Example from `setIconState`:
 async function setIconState(state: IconStateType, tabId?: number): Promise<void> {
   try {
     await chrome.action.setIcon({ path: iconPaths[state] });
-    isProcessing = state === 'processing';
+    isProcessing = state === "processing";
     // Notify specific tab about processing state
-    await sendMessage('toggleProcessingUI', isProcessing, tabId && { tabId });
+    await sendMessage("toggleProcessingUI", isProcessing, tabId && { tabId });
   } catch (error) {
-    console.error('Error setting icon state:', error);
+    console.error("Error setting icon state:", error);
     isProcessing = false;
     throw error;
   }
@@ -49,7 +49,7 @@ async function setIconState(state: IconStateType, tabId?: number): Promise<void>
 Messages are received using the `onMessage` handler:
 
 ```typescript
-onMessage('toggleProcessingUI', async message => {
+onMessage("toggleProcessingUI", async message => {
   if (message.data) {
     ui.mount();
   } else {
@@ -81,8 +81,8 @@ Currently implemented messages:
 1. User clicks extension icon
 2. Background processes content:
    ```typescript
-   await setIconState('processing', tab.id); // Shows UI
+   await setIconState("processing", tab.id); // Shows UI
    // ... processing ...
-   await setIconState('default', tab.id); // Hides UI
+   await setIconState("default", tab.id); // Hides UI
    ```
 3. Content script receives message and updates UI accordingly

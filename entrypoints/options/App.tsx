@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from "react";
 import {
   DEFAULT_COMMANDS,
   type CommandList,
@@ -7,9 +7,9 @@ import {
   type Condition,
   type Context,
   type ModelName,
-} from '@/config';
-import { i18n } from '#i18n';
-import '@/assets/tailwind.css';
+} from "@/config";
+import { i18n } from "#i18n";
+import "@/assets/tailwind.css";
 import {
   Button,
   Commands,
@@ -19,9 +19,9 @@ import {
   InfoPopup,
   ModelSelector,
   SupportMe,
-} from './components';
-import { useCommands, useCommandTimestamps, useUpdateCommands } from './queries';
-import { getStorageItemSafe, setStorageItemSafe, STORAGE_KEYS } from '@/utils/storage';
+} from "./components";
+import { useCommands, useCommandTimestamps, useUpdateCommands } from "./queries";
+import { getStorageItemSafe, setStorageItemSafe, STORAGE_KEYS } from "@/utils/storage";
 
 // Extended command type to include timestamp for sorting
 interface CommandWithTimestamp {
@@ -42,7 +42,7 @@ const ScrollToTopButton = ({
     if (columnRef.current) {
       columnRef.current.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   };
@@ -53,7 +53,7 @@ const ScrollToTopButton = ({
         <button
           onClick={scrollToTop}
           className="bg-foreground/10 hover:bg-foreground/20 text-foreground rounded-full p-1 shadow pointer-events-auto transition-opacity cursor-pointer opacity-80 hover:opacity-100"
-          title={i18n.t('scrollToTop')}
+          title={i18n.t("scrollToTop")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +76,7 @@ const ScrollToTopButton = ({
 };
 
 function App() {
-  const [newCommandKey, setNewCommandKey] = useState('');
+  const [newCommandKey, setNewCommandKey] = useState("");
   const [editingCommandKey, setEditingCommandKey] = useState<string | null>(null);
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
 
@@ -110,8 +110,8 @@ function App() {
     };
 
     // Add event listeners
-    leftColumn?.addEventListener('scroll', handleLeftScroll);
-    rightColumn?.addEventListener('scroll', handleRightScroll);
+    leftColumn?.addEventListener("scroll", handleLeftScroll);
+    rightColumn?.addEventListener("scroll", handleRightScroll);
 
     // Initial check
     handleLeftScroll();
@@ -119,8 +119,8 @@ function App() {
 
     // Cleanup
     return () => {
-      leftColumn?.removeEventListener('scroll', handleLeftScroll);
-      rightColumn?.removeEventListener('scroll', handleRightScroll);
+      leftColumn?.removeEventListener("scroll", handleLeftScroll);
+      rightColumn?.removeEventListener("scroll", handleRightScroll);
     };
   }, []);
 
@@ -134,7 +134,7 @@ function App() {
     removable?: boolean;
   }) => {
     if (newCommandKey in commands) {
-      alert(i18n.t('commandKeyExists'));
+      alert(i18n.t("commandKeyExists"));
       return;
     }
 
@@ -167,18 +167,18 @@ function App() {
       updateCommands({ commands: newCommands, timestamps: newTimestamps });
 
       // Reset form
-      setNewCommandKey('');
+      setNewCommandKey("");
       // Hide add form
       setIsAddFormVisible(false);
     } catch (error) {
-      console.error('Failed to save commands:', error);
-      alert(i18n.t('failedToSaveCommand'));
+      console.error("Failed to save commands:", error);
+      alert(i18n.t("failedToSaveCommand"));
     }
   };
 
   // Generate a unique key for new command
   const generateUniqueKey = () => {
-    const baseKey = 'customCommand';
+    const baseKey = "customCommand";
     let counter = 1;
     let key = `${baseKey}${counter}`;
 
@@ -221,11 +221,11 @@ function App() {
       if (defaultPageCommand === key) {
         // Find another page command to use as default
         const availablePageCommands = Object.entries(newCommands)
-          .filter(([_, cmd]) => cmd.context === 'page')
+          .filter(([_, cmd]) => cmd.context === "page")
           .map(([k]) => k);
 
         updatedPageCommand =
-          availablePageCommands.length > 0 ? availablePageCommands[0] : 'summarizeText'; // Fallback to default
+          availablePageCommands.length > 0 ? availablePageCommands[0] : "summarizeText"; // Fallback to default
 
         await setStorageItemSafe(STORAGE_KEYS.DEFAULT_PAGE_COMMAND, updatedPageCommand);
       }
@@ -233,11 +233,11 @@ function App() {
       if (defaultYoutubeCommand === key) {
         // Find another youtube command to use as default
         const availableYoutubeCommands = Object.entries(newCommands)
-          .filter(([_, cmd]) => cmd.context === 'youtube')
+          .filter(([_, cmd]) => cmd.context === "youtube")
           .map(([k]) => k);
 
         updatedYoutubeCommand =
-          availableYoutubeCommands.length > 0 ? availableYoutubeCommands[0] : 'summarizeTranscript'; // Fallback to default
+          availableYoutubeCommands.length > 0 ? availableYoutubeCommands[0] : "summarizeTranscript"; // Fallback to default
 
         await setStorageItemSafe(STORAGE_KEYS.DEFAULT_YOUTUBE_COMMAND, updatedYoutubeCommand);
       }
@@ -271,7 +271,7 @@ function App() {
   };
 
   const resetCommands = async () => {
-    if (confirm(i18n.t('resetCommandsConfirmation'))) {
+    if (confirm(i18n.t("resetCommandsConfirmation"))) {
       updateCommands({ commands: DEFAULT_COMMANDS, timestamps: {} });
       setEditingCommandKey(null);
     }
@@ -304,8 +304,8 @@ function App() {
     <div className="flex flex-col h-screen max-h-screen max-w-[1024px] mx-auto">
       <div className="flex items-center justify-between px-4 py-6 border-b border-foreground/10">
         <div className="flex items-center">
-          <img src="/icon/default/96.png" alt={i18n.t('sumbotLogo')} className="mr-3 h-10 w-10" />
-          <h1 className="text-3xl font-bold text-foreground/70">{i18n.t('optionsTitle')}</h1>
+          <img src="/icon/default/96.png" alt={i18n.t("sumbotLogo")} className="mr-3 h-10 w-10" />
+          <h1 className="text-3xl font-bold text-foreground/70">{i18n.t("optionsTitle")}</h1>
         </div>
         <div className="flex items-stretch gap-3 pr-2">
           <ImportExport />
@@ -338,8 +338,8 @@ function App() {
           <div className="overflow-y-auto px-4 pb-20 flex-1" ref={rightColumnRef}>
             <div className="flex justify-between items-center mb-4 pt-4 pb-2 bg-background sticky top-0 z-10">
               <div className="flex items-center gap-2">
-                <h2 className="text-2xl font-medium">{i18n.t('commandsSectionTitle')}</h2>
-                <InfoPopup content={i18n.t('commandsInfoPopup')} />
+                <h2 className="text-2xl font-medium">{i18n.t("commandsSectionTitle")}</h2>
+                <InfoPopup content={i18n.t("commandsInfoPopup")} />
               </div>
               <div className="flex gap-2">
                 <Button
@@ -349,10 +349,10 @@ function App() {
                   size="md"
                   className="w-24"
                 >
-                  {i18n.t('resetButton')}
+                  {i18n.t("resetButton")}
                 </Button>
                 <Button onClick={showAddCommandForm} color="primary" size="md" className="w-24">
-                  {i18n.t('addButton')}
+                  {i18n.t("addButton")}
                 </Button>
               </div>
             </div>

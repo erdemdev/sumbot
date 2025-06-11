@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
-import { i18n } from '#i18n';
-import { exportSettings, importSettings } from '@/utils/importExport';
+import { useState, useMemo } from "react";
+import { i18n } from "#i18n";
+import { exportSettings, importSettings } from "@/utils/importExport";
 
 const ImportExport = () => {
   const [isImporting, setIsImporting] = useState(false);
@@ -11,17 +11,17 @@ const ImportExport = () => {
 
     setIsImporting(true);
     try {
-      if (confirm(i18n.t('importConfirmation'))) {
+      if (confirm(i18n.t("importConfirmation"))) {
         await importSettings(file);
-        alert(i18n.t('importSettingsSuccess'));
+        alert(i18n.t("importSettingsSuccess"));
         window.location.reload();
       }
     } catch (error) {
-      console.error('Import error:', error);
-      alert(i18n.t('importSettingsError'));
+      console.error("Import error:", error);
+      alert(i18n.t("importSettingsError"));
     } finally {
       setIsImporting(false);
-      e.target.value = ''; // Reset file input
+      e.target.value = ""; // Reset file input
     }
   };
 
@@ -29,13 +29,13 @@ const ImportExport = () => {
     try {
       await exportSettings();
     } catch (error) {
-      console.error('Export error:', error);
+      console.error("Export error:", error);
     }
   };
 
   // Create the full text with dynamic button replacements
   const settingsText = useMemo(() => {
-    const template = i18n.t('settingsManagementText');
+    const template = i18n.t("settingsManagementText");
 
     // Find all {{placeholder}} matches
     const matches = [...template.matchAll(/\{\{([^}]+)\}\}/g)];
@@ -70,7 +70,7 @@ const ImportExport = () => {
               }
             }}
             className={`font-semibold text-foreground/90 hover:text-foreground hover:underline focus:underline focus:outline-none transition-colors ${
-              isImporting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              isImporting ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
             }`}
             disabled={isImporting}
             aria-disabled={isImporting}
@@ -97,11 +97,11 @@ const ImportExport = () => {
             type="button"
             onClick={() => {
               if (!isImporting) {
-                document.getElementById('import-file')?.click();
+                document.getElementById("import-file")?.click();
               }
             }}
             className={`font-semibold text-foreground/90 hover:text-foreground hover:underline focus:underline focus:outline-none transition-colors ${
-              isImporting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              isImporting ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
             }`}
             disabled={isImporting}
             aria-disabled={isImporting}

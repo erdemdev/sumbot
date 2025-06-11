@@ -8,7 +8,7 @@
  * @returns True if the URL is from YouTube
  */
 export function isYouTube(url: string | undefined): boolean {
-  return !!url?.includes('youtube.com') || !!url?.includes('youtu.be');
+  return !!url?.includes("youtube.com") || !!url?.includes("youtu.be");
 }
 
 /**
@@ -24,7 +24,7 @@ export function getUrlParameter(url: string | undefined, paramName: string): str
     const urlObj = new URL(url);
     return urlObj.searchParams.get(paramName);
   } catch (error) {
-    console.error('Error parsing URL:', error);
+    console.error("Error parsing URL:", error);
     return null;
   }
 }

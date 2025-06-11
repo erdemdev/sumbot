@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { i18n } from '#i18n';
-import { type VariableList } from '@/config';
-import { Button, InfoPopup } from './';
-import { useVariables, useUpdateVariables } from '../queries';
+import { useState } from "react";
+import { i18n } from "#i18n";
+import { type VariableList } from "@/config";
+import { Button, InfoPopup } from "./";
+import { useVariables, useUpdateVariables } from "../queries";
 
 interface VariablesProps {
   defaultVariables: VariableList;
@@ -14,30 +14,30 @@ const MAX_CHAR_LENGTH = 30;
 export default function Variables({ defaultVariables }: VariablesProps) {
   const [isAddingVariable, setIsAddingVariable] = useState(false);
   const [editingVariable, setEditingVariable] = useState<string | null>(null);
-  const [newVariableKey, setNewVariableKey] = useState('');
-  const [newVariableValue, setNewVariableValue] = useState('');
+  const [newVariableKey, setNewVariableKey] = useState("");
+  const [newVariableValue, setNewVariableValue] = useState("");
 
   const { data: variables = {} } = useVariables();
   const { mutate: updateVariables } = useUpdateVariables();
 
   const handleAddVariable = async () => {
     if (!newVariableKey.trim()) {
-      alert(i18n.t('variableNameEmpty'));
+      alert(i18n.t("variableNameEmpty"));
       return;
     }
 
     if (!newVariableValue.trim()) {
-      alert(i18n.t('variableValueEmpty'));
+      alert(i18n.t("variableValueEmpty"));
       return;
     }
 
     if (newVariableKey in variables) {
-      alert(i18n.t('variableKeyExists'));
+      alert(i18n.t("variableKeyExists"));
       return;
     }
 
     if (Object.keys(variables).length >= MAX_VARIABLES) {
-      alert(i18n.t('maxVariablesReached', [MAX_VARIABLES]));
+      alert(i18n.t("maxVariablesReached", [MAX_VARIABLES]));
       return;
     }
 
@@ -47,15 +47,15 @@ export default function Variables({ defaultVariables }: VariablesProps) {
     };
 
     updateVariables(newVariables);
-    setNewVariableKey('');
-    setNewVariableValue('');
+    setNewVariableKey("");
+    setNewVariableValue("");
     setIsAddingVariable(false);
   };
 
   const handleUpdateVariable = async (key: string, value: string) => {
     const trimmedValue = value.trim();
     if (!trimmedValue) {
-      alert(i18n.t('variableValueEmpty'));
+      alert(i18n.t("variableValueEmpty"));
       return;
     }
 
@@ -73,7 +73,7 @@ export default function Variables({ defaultVariables }: VariablesProps) {
   };
 
   const handleResetVariables = async () => {
-    if (confirm(i18n.t('resetVariablesConfirmation'))) {
+    if (confirm(i18n.t("resetVariablesConfirmation"))) {
       updateVariables(defaultVariables);
     }
   };
@@ -82,8 +82,8 @@ export default function Variables({ defaultVariables }: VariablesProps) {
     <div className="mt-10">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <h2 className="text-2xl font-medium">{i18n.t('variablesSectionTitle')}</h2>
-          <InfoPopup content={i18n.t('variablesInfoPopup', [MAX_VARIABLES])} />
+          <h2 className="text-2xl font-medium">{i18n.t("variablesSectionTitle")}</h2>
+          <InfoPopup content={i18n.t("variablesInfoPopup", [MAX_VARIABLES])} />
         </div>
         <div className="flex gap-2">
           <Button
@@ -93,34 +93,34 @@ export default function Variables({ defaultVariables }: VariablesProps) {
             size="md"
             className="w-20"
           >
-            {i18n.t('resetButton')}
+            {i18n.t("resetButton")}
           </Button>
           <Button
             onClick={() => {
               if (Object.keys(variables).length >= MAX_VARIABLES) {
-                alert(i18n.t('maxVariablesReached', [MAX_VARIABLES]));
+                alert(i18n.t("maxVariablesReached", [MAX_VARIABLES]));
                 return;
               }
               setIsAddingVariable(true);
-              setNewVariableKey('');
-              setNewVariableValue('');
+              setNewVariableKey("");
+              setNewVariableValue("");
             }}
             color="primary"
             size="md"
             className="w-20"
             disabled={Object.keys(variables).length >= MAX_VARIABLES}
           >
-            {i18n.t('addButton')}
+            {i18n.t("addButton")}
           </Button>
         </div>
       </div>
 
       {isAddingVariable && (
         <div className="mb-4 p-4 border-l-4 border-green-500 border bg-foreground/5 rounded text-base">
-          <h3 className="text-xl font-medium mb-4">{i18n.t('newVariable')}</h3>
+          <h3 className="text-xl font-medium mb-4">{i18n.t("newVariable")}</h3>
           <div className="space-y-3">
             <div>
-              <label className="block mb-1.5">{i18n.t('variableName')}</label>
+              <label className="block mb-1.5">{i18n.t("variableName")}</label>
               <input
                 type="text"
                 value={newVariableKey}
@@ -128,7 +128,7 @@ export default function Variables({ defaultVariables }: VariablesProps) {
                   const value = e.target.value.slice(0, MAX_CHAR_LENGTH);
                   setNewVariableKey(value);
                 }}
-                placeholder={i18n.t('variableNamePlaceholder')}
+                placeholder={i18n.t("variableNamePlaceholder")}
                 maxLength={MAX_CHAR_LENGTH}
                 minLength={1}
                 required
@@ -136,13 +136,13 @@ export default function Variables({ defaultVariables }: VariablesProps) {
               />
             </div>
             <div>
-              <label className="block mb-1.5">{i18n.t('variableValue')}</label>
+              <label className="block mb-1.5">{i18n.t("variableValue")}</label>
               <textarea
                 value={newVariableValue}
                 onChange={e => {
                   setNewVariableValue(e.target.value);
                 }}
-                placeholder={i18n.t('variableValuePlaceholder')}
+                placeholder={i18n.t("variableValuePlaceholder")}
                 minLength={1}
                 required
                 rows={4}
@@ -152,10 +152,10 @@ export default function Variables({ defaultVariables }: VariablesProps) {
           </div>
           <div className="flex justify-end gap-2 mt-4">
             <Button onClick={() => setIsAddingVariable(false)} variant="bordered" color="default">
-              {i18n.t('cancelButton')}
+              {i18n.t("cancelButton")}
             </Button>
             <Button onClick={handleAddVariable} color="primary">
-              {i18n.t('addVariableButton')}
+              {i18n.t("addVariableButton")}
             </Button>
           </div>
         </div>
@@ -173,7 +173,7 @@ export default function Variables({ defaultVariables }: VariablesProps) {
                   defaultValue={value}
                   className="border border-foreground/20 bg-background text-foreground px-4 py-2 rounded w-full text-base resize-none"
                   onKeyDown={e => {
-                    if (e.key === 'Escape') {
+                    if (e.key === "Escape") {
                       setEditingVariable(null);
                     }
                   }}
@@ -182,7 +182,7 @@ export default function Variables({ defaultVariables }: VariablesProps) {
                 />
                 <div className="flex justify-end gap-2 mt-2">
                   <Button onClick={() => setEditingVariable(null)} variant="text" size="sm">
-                    {i18n.t('cancelButton')}
+                    {i18n.t("cancelButton")}
                   </Button>
                   <Button
                     onClick={e => {
@@ -195,7 +195,7 @@ export default function Variables({ defaultVariables }: VariablesProps) {
                     color="primary"
                     size="sm"
                   >
-                    {i18n.t('saveButton')}
+                    {i18n.t("saveButton")}
                   </Button>
                 </div>
               </div>
@@ -223,11 +223,11 @@ export default function Variables({ defaultVariables }: VariablesProps) {
                       color="danger"
                       size="sm"
                     >
-                      {i18n.t('deleteButton')}
+                      {i18n.t("deleteButton")}
                     </Button>
                   )}
                   <Button onClick={() => setEditingVariable(key)} variant="text" size="sm">
-                    {i18n.t('editButton')}
+                    {i18n.t("editButton")}
                   </Button>
                 </>
               )}

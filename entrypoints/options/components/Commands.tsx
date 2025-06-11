@@ -1,6 +1,6 @@
-import { useForm, useFieldArray } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, useFieldArray } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ModelNameSchema,
   type CommandList,
@@ -9,21 +9,21 @@ import {
   ContextSchema,
   type Context,
   type ModelName,
-} from '@/config';
-import Button from './Button';
-import InfoPopup from './InfoPopup';
-import { useEffect, useRef } from 'react';
-import { useVariables } from '../queries';
-import { i18n } from '#i18n';
+} from "@/config";
+import Button from "./Button";
+import InfoPopup from "./InfoPopup";
+import { useEffect, useRef } from "react";
+import { useVariables } from "../queries";
+import { i18n } from "#i18n";
 
 // Form validation schema
 const formSchema = z.object({
-  name: z.string().min(1, i18n.t('commandNameRequired')).max(32, i18n.t('maxCharactersExceeded')),
-  prompt: z.string().min(1, i18n.t('promptTemplateRequired')),
+  name: z.string().min(1, i18n.t("commandNameRequired")).max(32, i18n.t("maxCharactersExceeded")),
+  prompt: z.string().min(1, i18n.t("promptTemplateRequired")),
   context: ContextSchema,
   model: z
-    .enum(['Default', ...ModelNameSchema.options])
-    .transform(value => (value === 'Default' ? undefined : value)),
+    .enum(["Default", ...ModelNameSchema.options])
+    .transform(value => (value === "Default" ? undefined : value)),
   conditions: z.array(ConditionSchema).optional(),
   removable: z.boolean().optional(),
 });
@@ -31,7 +31,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface CommandsProps {
-  mode: 'view' | 'edit' | 'add';
+  mode: "view" | "edit" | "add";
   command?: CommandList[string];
   isDefault?: boolean;
   onSave?: (values: {
@@ -57,12 +57,12 @@ function Commands({
   onEdit,
   onDelete,
   onCancel,
-  commandKey = '',
+  commandKey = "",
 }: CommandsProps) {
-  const isFormMode = mode === 'edit' || mode === 'add';
-  const formTitle = mode === 'add' ? i18n.t('newCommand') : i18n.t('editCommand');
-  const saveButtonText = mode === 'add' ? i18n.t('addCommandButton') : i18n.t('saveButton');
-  const formClass = mode === 'add' ? 'border-l-4 border-green-500' : '';
+  const isFormMode = mode === "edit" || mode === "add";
+  const formTitle = mode === "add" ? i18n.t("newCommand") : i18n.t("editCommand");
+  const saveButtonText = mode === "add" ? i18n.t("addCommandButton") : i18n.t("saveButton");
+  const formClass = mode === "add" ? "border-l-4 border-green-500" : "";
 
   // Create a ref for the form element
   const formRef = useRef<HTMLDivElement>(null);
@@ -95,19 +95,19 @@ function Commands({
             })) || [],
         }
       : {
-          name: '',
-          prompt: '',
-          context: 'page',
+          name: "",
+          prompt: "",
+          context: "page",
           conditions: [],
           removable: false,
         },
-    mode: 'onBlur',
+    mode: "onBlur",
   });
 
   // Field array for conditions
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'conditions',
+    name: "conditions",
   });
 
   // No effect needed for native details element
@@ -134,12 +134,12 @@ function Commands({
       // Use a small timeout to ensure the DOM has updated
       setTimeout(() => {
         formRef.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
+          behavior: "smooth",
+          block: "center",
         });
 
         // Focus the first input field
-        const firstInput = formRef.current?.querySelector('input, textarea') as HTMLElement;
+        const firstInput = formRef.current?.querySelector("input, textarea") as HTMLElement;
         if (firstInput) {
           firstInput.focus();
         }
@@ -148,7 +148,7 @@ function Commands({
   }, [isFormMode, mode, command]);
 
   // Watch prompt field to update it with variable buttons
-  const promptValue = watch('prompt');
+  const promptValue = watch("prompt");
 
   // Submit handler
   const onSubmit = (data: FormValues) => {
@@ -160,14 +160,14 @@ function Commands({
 
   // Insert template at the end of prompt
   const insertTemplate = (template: string) => {
-    setValue('prompt', (promptValue || '') + template, {
+    setValue("prompt", (promptValue || "") + template, {
       shouldDirty: true,
       shouldValidate: true,
     });
   };
 
   // Get all available variables (default + user-defined)
-  const defaultVariables = ['content', 'title', 'url', 'timestamp', 'html', 'fullPageContent'];
+  const defaultVariables = ["content", "title", "url", "timestamp", "html", "fullPageContent"];
   const allVariables = [...defaultVariables, ...Object.keys(userVariables)];
 
   return (
@@ -177,11 +177,11 @@ function Commands({
     >
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-medium">
-          {mode === 'view' ? (
+          {mode === "view" ? (
             <>
-              {command?.name}{' '}
+              {command?.name}{" "}
               <span className="text-sm text-foreground/40">
-                ({isDefault ? i18n.t('defaultLabel') : i18n.t('customLabel')})
+                ({isDefault ? i18n.t("defaultLabel") : i18n.t("customLabel")})
               </span>
             </>
           ) : (
@@ -189,30 +189,30 @@ function Commands({
           )}
         </h3>
         <div className="space-x-2 h-10">
-          {mode === 'view' ? (
+          {mode === "view" ? (
             <>
               {/* Show delete button for custom commands or default commands marked as removable */}
               {(!isDefault || command?.removable === true) && (
                 <Button
                   variant="text"
                   onClick={() => {
-                    if (confirm(i18n.t('deleteCommandConfirmation'))) {
+                    if (confirm(i18n.t("deleteCommandConfirmation"))) {
                       onDelete?.();
                     }
                   }}
                   color="danger"
                   size="md"
                 >
-                  {i18n.t('deleteButton')}
+                  {i18n.t("deleteButton")}
                 </Button>
               )}
               <Button variant="text" onClick={onEdit} size="md">
-                {i18n.t('editButton')}
+                {i18n.t("editButton")}
               </Button>
             </>
           ) : (
             <Button variant="bordered" onClick={onCancel} color="default" size="md">
-              {i18n.t('cancelButton')}
+              {i18n.t("cancelButton")}
             </Button>
           )}
         </div>
@@ -221,17 +221,17 @@ function Commands({
       <div className="space-y-4.5">
         <div className="flex gap-4">
           <div className="flex-1">
-            <label className="block mb-1.5 text-lg">{i18n.t('commandName')}</label>
+            <label className="block mb-1.5 text-lg">{i18n.t("commandName")}</label>
             {isFormMode ? (
               <>
                 <input
                   type="text"
                   maxLength={32}
-                  placeholder={i18n.t('commandNamePlaceholder')}
+                  placeholder={i18n.t("commandNamePlaceholder")}
                   className={`border border-foreground/20 bg-background disabled:bg-foreground/10 disabled:text-foreground text-foreground px-4 py-2.5 rounded w-full text-lg h-[52px] ${
-                    errors.name ? 'border border-red-500' : ''
+                    errors.name ? "border border-red-500" : ""
                   }`}
-                  {...register('name')}
+                  {...register("name")}
                 />
                 {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
               </>
@@ -245,16 +245,16 @@ function Commands({
             )}
           </div>
           <div className="w-1/4">
-            <label className="block mb-1.5 text-lg">{i18n.t('contextLabel')}</label>
+            <label className="block mb-1.5 text-lg">{i18n.t("contextLabel")}</label>
             {isFormMode ? (
               <>
                 {isDefault ? (
                   <input
                     type="text"
                     value={
-                      command?.context === 'youtube'
-                        ? i18n.t('youtubeContext')
-                        : i18n.t('pageContext')
+                      command?.context === "youtube"
+                        ? i18n.t("youtubeContext")
+                        : i18n.t("pageContext")
                     }
                     disabled
                     className="border border-foreground/20 bg-background disabled:bg-foreground/10 disabled:text-foreground text-foreground px-4 py-2.5 rounded w-full text-lg opacity-75 h-[52px]"
@@ -263,12 +263,12 @@ function Commands({
                   <>
                     <select
                       className={`border border-foreground/20 bg-background disabled:bg-foreground/10 disabled:text-foreground text-foreground px-3 py-2.5 rounded w-full text-lg cursor-pointer h-[52px] ${
-                        errors.context ? 'border border-red-500' : ''
+                        errors.context ? "border border-red-500" : ""
                       }`}
-                      {...register('context')}
+                      {...register("context")}
                     >
-                      <option value="page">{i18n.t('pageContext')}</option>
-                      <option value="youtube">{i18n.t('youtubeContext')}</option>
+                      <option value="page">{i18n.t("pageContext")}</option>
+                      <option value="youtube">{i18n.t("youtubeContext")}</option>
                     </select>
                     {errors.context && (
                       <p className="text-red-500 text-sm mt-1">{errors.context.message}</p>
@@ -280,7 +280,7 @@ function Commands({
               <input
                 type="text"
                 value={
-                  command?.context === 'youtube' ? i18n.t('youtubeContext') : i18n.t('pageContext')
+                  command?.context === "youtube" ? i18n.t("youtubeContext") : i18n.t("pageContext")
                 }
                 disabled
                 className="border border-foreground/20 bg-background disabled:bg-foreground/10 disabled:text-foreground text-foreground px-4 py-2.5 rounded w-full text-lg opacity-75 h-[52px]"
@@ -288,13 +288,13 @@ function Commands({
             )}
           </div>
           <div className="w-1/4">
-            <label className="block mb-1.5 text-lg">{i18n.t('modelLabel')}</label>
+            <label className="block mb-1.5 text-lg">{i18n.t("modelLabel")}</label>
             {isFormMode ? (
               <select
                 className={`border border-foreground/20 bg-background disabled:bg-foreground/10 disabled:text-foreground text-foreground px-3 py-2.5 rounded w-full text-lg cursor-pointer h-[52px]`}
-                {...register('model')}
+                {...register("model")}
               >
-                <option value="Default">{i18n.t('defaultModelLabel')}</option>
+                <option value="Default">{i18n.t("defaultModelLabel")}</option>
                 <option value="ChatGPT">ChatGPT</option>
                 <option value="Perplexity">Perplexity</option>
                 <option value="Grok">Grok</option>
@@ -305,7 +305,7 @@ function Commands({
             ) : (
               <input
                 type="text"
-                value={command?.model || i18n.t('defaultModelLabel')}
+                value={command?.model || i18n.t("defaultModelLabel")}
                 disabled
                 className="border border-foreground/20 bg-background disabled:bg-foreground/10 disabled:text-foreground text-foreground px-4 py-2.5 rounded w-full text-lg opacity-75 h-[52px]"
               />
@@ -314,22 +314,22 @@ function Commands({
         </div>
 
         <div>
-          <label className="block mb-1.5 text-lg">{i18n.t('promptTemplate')}</label>
+          <label className="block mb-1.5 text-lg">{i18n.t("promptTemplate")}</label>
           {isFormMode ? (
             <>
               <textarea
-                placeholder={i18n.t('promptTemplatePlaceholder')}
+                placeholder={i18n.t("promptTemplatePlaceholder")}
                 className={`border border-foreground/20 disabled:bg-foreground/10 disabled:text-foreground bg-background text-foreground p-2.5 rounded w-full h-28 text-lg px-4 ${
-                  errors.prompt ? 'border border-red-500' : ''
+                  errors.prompt ? "border border-red-500" : ""
                 }`}
-                {...register('prompt')}
+                {...register("prompt")}
               />
               {errors.prompt && (
                 <p className="text-red-500 text-sm mt-1">{errors.prompt.message}</p>
               )}
               <details className="mt-2 select-none">
                 <summary className="text-sm text-foreground/70 py-2 cursor-pointer hover:text-foreground/90">
-                  {i18n.t('insertVariable')}:
+                  {i18n.t("insertVariable")}:
                 </summary>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {allVariables.map(variable => (
@@ -342,20 +342,20 @@ function Commands({
                         size="sm"
                       >
                         &#123;&#123;{variable}&#125;&#125;
-                        {variable === 'html' && (
+                        {variable === "html" && (
                           <span className="ml-1">
                             <InfoPopup
                               className="-my-1 translate-y-1"
-                              content={i18n.t('htmlVariableInfoPopup')}
+                              content={i18n.t("htmlVariableInfoPopup")}
                               size="small"
                             />
                           </span>
                         )}
-                        {variable === 'fullPageContent' && (
+                        {variable === "fullPageContent" && (
                           <span className="ml-1">
                             <InfoPopup
                               className="-my-1 translate-y-1"
-                              content={i18n.t('fullPageContentVariableInfoPopup')}
+                              content={i18n.t("fullPageContentVariableInfoPopup")}
                               size="small"
                             />
                           </span>
@@ -376,11 +376,11 @@ function Commands({
         </div>
 
         {/* Conditions Section - Show in both view and form modes */}
-        {mode === 'view' && command?.conditions && command.conditions.length > 0 && (
+        {mode === "view" && command?.conditions && command.conditions.length > 0 && (
           <div className="mt-4">
             <div className="flex items-center gap-1 mb-2">
-              <h3 className="text-lg font-medium">{i18n.t('conditionsLabel')}</h3>
-              <InfoPopup content={i18n.t('conditionsDescription')} size="small" />
+              <h3 className="text-lg font-medium">{i18n.t("conditionsLabel")}</h3>
+              <InfoPopup content={i18n.t("conditionsDescription")} size="small" />
             </div>
             <div className="p-4 border border-foreground/20 rounded bg-foreground/5">
               {command.conditions.map((condition, index) => (
@@ -390,7 +390,7 @@ function Commands({
                 >
                   <div className="flex-1">
                     <label className="block mb-1.5 text-base">
-                      {i18n.t('tokenThresholdLabel')}
+                      {i18n.t("tokenThresholdLabel")}
                     </label>
                     <input
                       type="text"
@@ -402,7 +402,7 @@ function Commands({
 
                   <div className="flex-1">
                     <div className="flex items-center gap-1 mb-1.5">
-                      <label className="text-base">{i18n.t('alternativeModelLabel')}</label>
+                      <label className="text-base">{i18n.t("alternativeModelLabel")}</label>
                     </div>
                     <input
                       type="text"
@@ -422,8 +422,8 @@ function Commands({
             {/* Conditions Section */}
             <div className="mt-4">
               <div className="flex items-center gap-1 mb-2">
-                <h3 className="text-lg font-medium">{i18n.t('conditionsLabel')}</h3>
-                <InfoPopup content={i18n.t('conditionsDescription')} size="small" />
+                <h3 className="text-lg font-medium">{i18n.t("conditionsLabel")}</h3>
+                <InfoPopup content={i18n.t("conditionsDescription")} size="small" />
               </div>
               <div className="p-4 border border-foreground/20 rounded bg-foreground/5">
                 {fields.map((field, index) => (
@@ -433,7 +433,7 @@ function Commands({
                   >
                     <div className="flex-1">
                       <label className="block mb-1.5 text-base">
-                        {i18n.t('tokenThresholdLabel')}
+                        {i18n.t("tokenThresholdLabel")}
                       </label>
                       <input
                         type="number"
@@ -447,7 +447,7 @@ function Commands({
 
                     <div className="flex-1">
                       <div className="flex items-center gap-1 mb-1.5">
-                        <label className="text-base">{i18n.t('alternativeModelLabel')}</label>
+                        <label className="text-base">{i18n.t("alternativeModelLabel")}</label>
                       </div>
                       <select
                         className="border border-foreground/20 bg-background text-foreground px-3 py-2 rounded w-full cursor-pointer h-[42px] text-base"
@@ -468,7 +468,7 @@ function Commands({
                       onClick={() => remove(index)}
                       className="mb-1"
                     >
-                      {i18n.t('removeConditionButton')}
+                      {i18n.t("removeConditionButton")}
                     </Button>
                   </div>
                 ))}
@@ -485,7 +485,7 @@ function Commands({
                   }}
                   className="mt-2"
                 >
-                  {i18n.t('addConditionButton')}
+                  {i18n.t("addConditionButton")}
                 </Button>
               </div>
             </div>

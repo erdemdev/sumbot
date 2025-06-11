@@ -1,19 +1,19 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   extensionStorage,
   STORAGE_KEYS,
   getStorageItemSafe,
   setStorageItemSafe,
-} from '@/utils/storage';
-import type { CommandList, VariableList } from '@/config';
+} from "@/utils/storage";
+import type { CommandList, VariableList } from "@/config";
 
 // Query keys
 export const QUERY_KEYS = {
-  commands: ['commands'] as const,
-  variables: ['variables'] as const,
-  commandTimestamps: ['commandTimestamps'] as const,
-  defaultPageCommand: ['defaultPageCommand'] as const,
-  defaultYoutubeCommand: ['defaultYoutubeCommand'] as const,
+  commands: ["commands"] as const,
+  variables: ["variables"] as const,
+  commandTimestamps: ["commandTimestamps"] as const,
+  defaultPageCommand: ["defaultPageCommand"] as const,
+  defaultYoutubeCommand: ["defaultYoutubeCommand"] as const,
 } as const;
 
 // Commands queries and mutations
@@ -24,7 +24,7 @@ export const useCommands = () => {
       try {
         return await getStorageItemSafe(STORAGE_KEYS.USER_GENERATED_COMMANDS);
       } catch (error) {
-        console.error('Failed to fetch commands:', error);
+        console.error("Failed to fetch commands:", error);
         return {};
       }
     },
@@ -38,7 +38,7 @@ export const useCommandTimestamps = () => {
       try {
         return await getStorageItemSafe(STORAGE_KEYS.COMMAND_TIMESTAMPS);
       } catch (error) {
-        console.error('Failed to fetch command timestamps:', error);
+        console.error("Failed to fetch command timestamps:", error);
         return {};
       }
     },
@@ -70,11 +70,11 @@ export const useUpdateCommands = () => {
 
         // If the deleted key was set as a default command, reset it to fallback value
         if (defaultPageCommand === deletedKey) {
-          await setStorageItemSafe(STORAGE_KEYS.DEFAULT_PAGE_COMMAND, 'summarizeText');
+          await setStorageItemSafe(STORAGE_KEYS.DEFAULT_PAGE_COMMAND, "summarizeText");
         }
 
         if (defaultYoutubeCommand === deletedKey) {
-          await setStorageItemSafe(STORAGE_KEYS.DEFAULT_YOUTUBE_COMMAND, 'summarizeTranscript');
+          await setStorageItemSafe(STORAGE_KEYS.DEFAULT_YOUTUBE_COMMAND, "summarizeTranscript");
         }
       }
     },
@@ -99,8 +99,8 @@ export const useDefaultPageCommand = () => {
       try {
         return await getStorageItemSafe(STORAGE_KEYS.DEFAULT_PAGE_COMMAND);
       } catch (error) {
-        console.error('Failed to fetch default page command:', error);
-        return 'summarizeText';
+        console.error("Failed to fetch default page command:", error);
+        return "summarizeText";
       }
     },
   });
@@ -113,8 +113,8 @@ export const useDefaultYoutubeCommand = () => {
       try {
         return await getStorageItemSafe(STORAGE_KEYS.DEFAULT_YOUTUBE_COMMAND);
       } catch (error) {
-        console.error('Failed to fetch default youtube command:', error);
-        return 'summarizeTranscript';
+        console.error("Failed to fetch default youtube command:", error);
+        return "summarizeTranscript";
       }
     },
   });
@@ -158,7 +158,7 @@ export const useVariables = () => {
       try {
         return await getStorageItemSafe(STORAGE_KEYS.USER_GENERATED_VARIABLES);
       } catch (error) {
-        console.error('Failed to fetch variables:', error);
+        console.error("Failed to fetch variables:", error);
         return {};
       }
     },

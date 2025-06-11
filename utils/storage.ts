@@ -1,5 +1,5 @@
-import { defineExtensionStorage } from '@webext-core/storage';
-import { browser } from 'wxt/browser';
+import { defineExtensionStorage } from "@webext-core/storage";
+import { browser } from "wxt/browser";
 import {
   type VariableList,
   type CommandList,
@@ -7,15 +7,15 @@ import {
   DEFAULT_MODEL,
   DEFAULT_COMMANDS,
   DEFAULT_VARIABLES,
-} from '@/config';
+} from "@/config";
 
 export enum STORAGE_KEYS {
-  DEFAULT_MODEL = '0',
-  USER_GENERATED_COMMANDS = '1',
-  USER_GENERATED_VARIABLES = '2',
-  COMMAND_TIMESTAMPS = '3',
-  DEFAULT_PAGE_COMMAND = '4',
-  DEFAULT_YOUTUBE_COMMAND = '5',
+  DEFAULT_MODEL = "0",
+  USER_GENERATED_COMMANDS = "1",
+  USER_GENERATED_VARIABLES = "2",
+  COMMAND_TIMESTAMPS = "3",
+  DEFAULT_PAGE_COMMAND = "4",
+  DEFAULT_YOUTUBE_COMMAND = "5",
 }
 
 export type ExtensionStorageSchema = {
@@ -37,30 +37,30 @@ const DEFAULT_VALUES: Record<STORAGE_KEYS, unknown> = {
   [STORAGE_KEYS.USER_GENERATED_COMMANDS]: DEFAULT_COMMANDS,
   [STORAGE_KEYS.USER_GENERATED_VARIABLES]: DEFAULT_VARIABLES,
   [STORAGE_KEYS.COMMAND_TIMESTAMPS]: {},
-  [STORAGE_KEYS.DEFAULT_PAGE_COMMAND]: 'summarizeText',
-  [STORAGE_KEYS.DEFAULT_YOUTUBE_COMMAND]: 'summarizeTranscript',
+  [STORAGE_KEYS.DEFAULT_PAGE_COMMAND]: "summarizeText",
+  [STORAGE_KEYS.DEFAULT_YOUTUBE_COMMAND]: "summarizeTranscript",
 };
 
 /**
  * Type validators for storage values
  */
 const validators = {
-  [STORAGE_KEYS.DEFAULT_MODEL]: (value: unknown): value is ModelName => typeof value === 'string',
+  [STORAGE_KEYS.DEFAULT_MODEL]: (value: unknown): value is ModelName => typeof value === "string",
 
   [STORAGE_KEYS.USER_GENERATED_COMMANDS]: (value: unknown): value is CommandList =>
-    typeof value === 'object' && value !== null,
+    typeof value === "object" && value !== null,
 
   [STORAGE_KEYS.USER_GENERATED_VARIABLES]: (value: unknown): value is VariableList =>
-    typeof value === 'object' && value !== null,
+    typeof value === "object" && value !== null,
 
   [STORAGE_KEYS.COMMAND_TIMESTAMPS]: (value: unknown): value is Record<string, number> =>
-    typeof value === 'object' && value !== null,
+    typeof value === "object" && value !== null,
 
   [STORAGE_KEYS.DEFAULT_PAGE_COMMAND]: (value: unknown): value is string =>
-    typeof value === 'string',
+    typeof value === "string",
 
   [STORAGE_KEYS.DEFAULT_YOUTUBE_COMMAND]: (value: unknown): value is string =>
-    typeof value === 'string',
+    typeof value === "string",
 };
 
 /**
@@ -68,7 +68,7 @@ const validators = {
  */
 export async function resetStorageAndReload(): Promise<void> {
   try {
-    console.warn('Resetting extension storage to defaults due to invalid data');
+    console.warn("Resetting extension storage to defaults due to invalid data");
 
     // Reset all storage values to defaults with proper type assertions
     await extensionStorage.setItem(
@@ -108,7 +108,7 @@ export async function resetStorageAndReload(): Promise<void> {
       window.location.reload();
     }
   } catch (error) {
-    console.error('Failed to reset storage:', error);
+    console.error("Failed to reset storage:", error);
     window.location.reload();
   }
 }

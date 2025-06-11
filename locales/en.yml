@@ -89,7 +89,7 @@ alternativeModelLabel: Alternative Model
 removeConditionButton: Remove
 commandsInfoPopup: Commands can be assigned as default actions for the extension button or used in context menus.
 processing: Processing
-maxCharactersExceeded: 'Maximum character limit (32) exceeded'
+maxCharactersExceeded: "Maximum character limit (32) exceeded"
 htmlVariableInfoPopup: The HTML variable contains the raw HTML of the page. Commands using this variable will not appear in the selection context menu.
 fullPageContentVariableInfoPopup: Contains the full page content including title and all visible text from the page. Commands using this variable will not appear in the selection context menu.
 buyMeCoffee: Buy Me A Coffee

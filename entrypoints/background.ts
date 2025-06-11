@@ -1,15 +1,15 @@
-import { models, iconPaths, type IconStateType, type Context, type ModelDetails } from '@/config';
+import { models, iconPaths, type IconStateType, type Context, type ModelDetails } from "@/config";
 
 // Helper to handle both action and browserAction APIs
 const browserAction = browser.action || browser.browserAction;
-import { ExtractedContent, extractText, extractYoutubeTranscript } from '@/utils/extractors';
-import { generatePrompt } from '@/utils/promptGenerator';
-import { submitPrompt, submitPromptToTextarea } from '@/utils/promptSubmitter';
-import { selectModel } from '@/utils/modelSelector';
-import { sendMessage } from '@/utils/messaging';
-import { isYouTube, getUrlParameter } from '@/utils/url';
-import { STORAGE_KEYS, getStorageItemSafe } from '@/utils/storage';
-import { i18n } from '#i18n';
+import { ExtractedContent, extractText, extractYoutubeTranscript } from "@/utils/extractors";
+import { generatePrompt } from "@/utils/promptGenerator";
+import { submitPrompt, submitPromptToTextarea } from "@/utils/promptSubmitter";
+import { selectModel } from "@/utils/modelSelector";
+import { sendMessage } from "@/utils/messaging";
+import { isYouTube, getUrlParameter } from "@/utils/url";
+import { STORAGE_KEYS, getStorageItemSafe } from "@/utils/storage";
+import { i18n } from "#i18n";
 
 let processingTabs = new Set<number>();
 
@@ -21,13 +21,13 @@ async function setIconState(state: IconStateType, tabId?: number): Promise<void>
       await browserAction.setIcon({ path: iconPaths[state] });
 
       switch (state) {
-        case 'processing':
+        case "processing":
           processingTabs.add(tabId);
           if (browserAction.disable) {
             await browserAction.disable(tabId);
           }
           break;
-        case 'disabled':
+        case "disabled":
           if (browserAction.disable) {
             await browserAction.disable(tabId);
           }
@@ -41,10 +41,10 @@ async function setIconState(state: IconStateType, tabId?: number): Promise<void>
       }
 
       // Notify content scripts about processing state
-      await sendMessage('toggleProcessingUI', state === 'processing', tabId && { tabId });
+      await sendMessage("toggleProcessingUI", state === "processing", tabId && { tabId });
     }
   } catch (error) {
-    console.error('Error setting icon state:', error);
+    console.error("Error setting icon state:", error);
     throw error;
   }
 }
@@ -52,21 +52,21 @@ async function setIconState(state: IconStateType, tabId?: number): Promise<void>
 async function processTab(tab: chrome.tabs.Tab): Promise<void> {
   // Prevent processing if the tab is already being processed
   if (processingTabs.has(tab.id!)) {
-    console.log('Tab is already being processed, ignoring click');
+    console.log("Tab is already being processed, ignoring click");
     return;
   }
 
-  console.log('Extension clicked - starting process');
+  console.log("Extension clicked - starting process");
 
   try {
     processingTabs.add(tab.id!);
-    await setIconState('processing', tab.id);
-    console.log('Starting content extraction');
+    await setIconState("processing", tab.id);
+    console.log("Starting content extraction");
 
     // Check if the URL is from YouTube using the shared utility function
     const data = isYouTube(tab.url) ? await extractYoutubeTranscript() : await extractText();
 
-    console.log('Submitting content to promptSubmitter');
+    console.log("Submitting content to promptSubmitter");
     const commandKey = await getCommandKey(data);
     const promptText = await generatePrompt(data, commandKey);
     const userCommands = await getStorageItemSafe(STORAGE_KEYS.USER_GENERATED_COMMANDS);
@@ -75,11 +75,11 @@ async function processTab(tab: chrome.tabs.Tab): Promise<void> {
     // Select the appropriate model based on text, command conditions, and override
     const { model } = await selectModel(promptText, commandKey, overrideModel);
 
-    await Promise.all([submitPrompt(promptText, model), setIconState('default', tab.id)]);
+    await Promise.all([submitPrompt(promptText, model), setIconState("default", tab.id)]);
   } catch (error) {
-    console.log('Error occurred during processing');
-    await setIconState('default', tab.id);
-    console.error('Error details:', error);
+    console.log("Error occurred during processing");
+    await setIconState("default", tab.id);
+    console.error("Error details:", error);
     throw error;
   } finally {
     processingTabs.delete(tab.id!);
@@ -138,20 +138,20 @@ async function handleUrlParameters(tab: { url?: string; id?: number }): Promise<
   if (!matchingModel) return;
 
   // Check for sumbot_prompt parameter
-  const promptParam = getUrlParameter(tab.url, 'sumbot_prompt');
+  const promptParam = getUrlParameter(tab.url, "sumbot_prompt");
   if (!promptParam) return;
 
   // Prevent processing if the tab is already being processed
   if (processingTabs.has(tab.id)) {
-    console.log('Tab is already being processed, ignoring URL parameter');
+    console.log("Tab is already being processed, ignoring URL parameter");
     return;
   }
 
-  console.log('Found sumbot_prompt parameter, submitting text:', promptParam);
+  console.log("Found sumbot_prompt parameter, submitting text:", promptParam);
 
   try {
     processingTabs.add(tab.id);
-    await setIconState('processing', tab.id);
+    await setIconState("processing", tab.id);
 
     // Wait for the page to fully load
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -165,12 +165,12 @@ async function handleUrlParameters(tab: { url?: string; id?: number }): Promise<
 
     // Clean up the URL by removing the parameter
     const cleanUrl = new URL(tab.url);
-    cleanUrl.searchParams.delete('sumbot_prompt');
+    cleanUrl.searchParams.delete("sumbot_prompt");
     // await browser.tabs.update(tab.id, { url: cleanUrl.toString() });
   } catch (error) {
-    console.error('Error handling URL parameter:', error);
+    console.error("Error handling URL parameter:", error);
   } finally {
-    await setIconState('default', tab.id);
+    await setIconState("default", tab.id);
     processingTabs.delete(tab.id);
   }
 }
@@ -188,24 +188,24 @@ async function createDynamicContextMenus(): Promise<void> {
 
     // Create parent menu for selection context
     browser.contextMenus.create({
-      id: 'sumbot-selection',
-      title: i18n.t('textCommandsMenuTitle'),
-      contexts: ['selection'],
+      id: "sumbot-selection",
+      title: i18n.t("textCommandsMenuTitle"),
+      contexts: ["selection"],
     });
 
     // Create parent menu for page context - exclude YouTube domains
     browser.contextMenus.create({
-      id: 'sumbot-page',
-      title: i18n.t('textCommandsMenuTitle'),
-      contexts: ['page'],
+      id: "sumbot-page",
+      title: i18n.t("textCommandsMenuTitle"),
+      contexts: ["page"],
     });
 
     // Create parent menu for YouTube context (only visible on YouTube)
     browser.contextMenus.create({
-      id: 'sumbot-youtube',
-      title: i18n.t('youtubeCommandsMenuTitle'),
-      contexts: ['page'],
-      documentUrlPatterns: ['*://*.youtube.com/*'],
+      id: "sumbot-youtube",
+      title: i18n.t("youtubeCommandsMenuTitle"),
+      contexts: ["page"],
+      documentUrlPatterns: ["*://*.youtube.com/*"],
     });
 
     // Create menu items for each command
@@ -215,43 +215,43 @@ async function createDynamicContextMenus(): Promise<void> {
 
       // For selected text context - only show page commands and exclude commands with HTML or fullPageContent variables
       if (
-        command.context === 'page' &&
-        !['{{html}}', '{{fullPageContent}}'].some(variable => command.prompt.includes(variable))
+        command.context === "page" &&
+        !["{{html}}", "{{fullPageContent}}"].some(variable => command.prompt.includes(variable))
       ) {
         browser.contextMenus.create({
           id: `selection-${commandId}`,
           title: command.name,
-          parentId: 'sumbot-selection',
-          contexts: ['selection'],
+          parentId: "sumbot-selection",
+          contexts: ["selection"],
         });
       }
 
       // Handle commands for regular pages
-      if (!command.context || command.context === 'page') {
+      if (!command.context || command.context === "page") {
         // Show page commands on the regular page context menu
         browser.contextMenus.create({
           id: `page-${commandId}`,
           title: command.name,
-          parentId: 'sumbot-page',
-          contexts: ['page'],
+          parentId: "sumbot-page",
+          contexts: ["page"],
         });
       }
 
       // Handle YouTube-specific commands and commands without a specific context
-      if (command.context === 'youtube' || !command.context) {
+      if (command.context === "youtube" || !command.context) {
         // Show on YouTube pages
         browser.contextMenus.create({
           id: `youtube-${commandId}`,
           title: command.name,
-          parentId: 'sumbot-youtube',
-          contexts: ['page'],
+          parentId: "sumbot-youtube",
+          contexts: ["page"],
         });
       }
     }
 
-    console.log('Dynamic context menus created successfully');
+    console.log("Dynamic context menus created successfully");
   } catch (error) {
-    console.error('Error creating dynamic context menus:', error);
+    console.error("Error creating dynamic context menus:", error);
   }
 }
 
@@ -270,38 +270,38 @@ async function handleContextMenuClick(
     // Get command ID from menu ID
     let commandKey: string | null = null;
     // 'selection' is a special case not in Context type
-    let context: 'selection' | Context = 'page';
+    let context: "selection" | Context = "page";
 
-    if (menuId.startsWith('selection-')) {
-      commandKey = menuId.replace('selection-', '');
-      context = 'selection';
-    } else if (menuId.startsWith('page-')) {
-      commandKey = menuId.replace('page-', '');
-      context = 'page';
-    } else if (menuId.startsWith('youtube-')) {
-      commandKey = menuId.replace('youtube-', '');
-      context = 'youtube';
+    if (menuId.startsWith("selection-")) {
+      commandKey = menuId.replace("selection-", "");
+      context = "selection";
+    } else if (menuId.startsWith("page-")) {
+      commandKey = menuId.replace("page-", "");
+      context = "page";
+    } else if (menuId.startsWith("youtube-")) {
+      commandKey = menuId.replace("youtube-", "");
+      context = "youtube";
     }
 
     if (!commandKey) return;
 
     // Prevent processing if the tab is already being processed
     if (processingTabs.has(tab.id)) {
-      console.log('Tab is already being processed, ignoring context menu click');
+      console.log("Tab is already being processed, ignoring context menu click");
       return;
     }
 
     processingTabs.add(tab.id);
-    await setIconState('processing', tab.id);
+    await setIconState("processing", tab.id);
 
     try {
       let data;
 
       // Extract content based on context
-      if (context === 'selection' && info.selectionText) {
+      if (context === "selection" && info.selectionText) {
         // For selection, we only use the selected text - context is always page
         data = { title: tab.title, content: info.selectionText };
-      } else if (context === 'youtube' || (isYouTube(tab.url) && context === 'page')) {
+      } else if (context === "youtube" || (isYouTube(tab.url) && context === "page")) {
         data = await extractYoutubeTranscript();
       } else {
         data = await extractText();
@@ -326,13 +326,13 @@ async function handleContextMenuClick(
         [STORAGE_KEYS.COMMAND_TIMESTAMPS]: timestamps,
       });
     } catch (error) {
-      console.error('Error processing context menu command:', error);
+      console.error("Error processing context menu command:", error);
     } finally {
-      await setIconState('default', tab.id);
+      await setIconState("default", tab.id);
       processingTabs.delete(tab.id);
     }
   } catch (error) {
-    console.error('Error in context menu handler:', error);
+    console.error("Error in context menu handler:", error);
   }
 }
 
@@ -383,14 +383,14 @@ export default defineBackground(() => {
         }
       }
     } catch (error) {
-      console.error('Error getting tab:', error);
+      console.error("Error getting tab:", error);
     }
   });
 
   // Add listener for tab changes
   browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     // Check if the tab has completed loading
-    if (changeInfo.status === 'complete') {
+    if (changeInfo.status === "complete") {
       // Check for URL parameters on model websites
       await handleUrlParameters(tab);
     }

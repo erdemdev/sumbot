@@ -1,4 +1,4 @@
-import { i18n } from '#i18n';
+import { i18n } from "#i18n";
 
 const SupportMe = () => {
   return (
@@ -9,7 +9,7 @@ const SupportMe = () => {
       className="font-semibold text-foreground/90 bg-foreground/5 hover:bg-foreground/10 border-foreground/10 border rounded focus:outline-none transition-colors cursor-pointer flex items-center gap-1.5 pl-3 pr-4 py-2 text-sm"
     >
       <span className="scale-110">💚</span>
-      <span>{i18n.t('supportMe')}</span>
+      <span>{i18n.t("supportMe")}</span>
     </a>
   );
 };

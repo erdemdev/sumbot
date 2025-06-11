@@ -1,6 +1,6 @@
-import { browser } from 'wxt/browser';
-import { STORAGE_KEYS, setStorageItemSafe, getStorageItemSafe } from './storage';
-import { i18n } from '#i18n';
+import { browser } from "wxt/browser";
+import { STORAGE_KEYS, setStorageItemSafe, getStorageItemSafe } from "./storage";
+import { i18n } from "#i18n";
 
 export type ExportedSettings = {
   version: string;
@@ -28,14 +28,14 @@ export async function exportSettings(): Promise<void> {
 
     // Create a blob from the data
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: 'application/json',
+      type: "application/json",
     });
 
     // Create a download link and trigger it
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = i18n.t('exportFilename');
+    a.download = i18n.t("exportFilename");
     document.body.appendChild(a);
     a.click();
 
@@ -45,7 +45,7 @@ export async function exportSettings(): Promise<void> {
       URL.revokeObjectURL(url);
     }, 100);
   } catch (error) {
-    console.error('Failed to export settings:', error);
+    console.error("Failed to export settings:", error);
   }
 }
 
@@ -61,15 +61,15 @@ export async function importSettings(file: File): Promise<boolean> {
     reader.onload = async event => {
       try {
         if (!event.target?.result) {
-          reject(new Error('Failed to read file'));
+          reject(new Error("Failed to read file"));
           return;
         }
 
         const importedData = JSON.parse(event.target.result as string) as ExportedSettings;
 
         // Validate imported data structure
-        if (!importedData.data || typeof importedData.data !== 'object') {
-          reject(new Error('Invalid import data structure'));
+        if (!importedData.data || typeof importedData.data !== "object") {
+          reject(new Error("Invalid import data structure"));
           return;
         }
 
@@ -83,7 +83,7 @@ export async function importSettings(file: File): Promise<boolean> {
 
         resolve(true);
       } catch (error) {
-        console.error('Failed to import settings:', error);
+        console.error("Failed to import settings:", error);
         reject(error);
       }
     };

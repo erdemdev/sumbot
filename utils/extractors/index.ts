@@ -1,5 +1,5 @@
-export { extractText } from './textExtractor';
-export { extractYoutubeTranscript } from './youtubeExtractor';
+export { extractText } from "./textExtractor";
+export { extractYoutubeTranscript } from "./youtubeExtractor";
 
 export interface ExtractedContent {
   content: string;

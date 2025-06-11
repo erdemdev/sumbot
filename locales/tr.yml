@@ -88,7 +88,7 @@ tokenThresholdLabel: Token Eşiği
 alternativeModelLabel: Alternatif Model
 removeConditionButton: Kaldır
 processing: İşleniyor
-maxCharactersExceeded: 'Maksimum karakter sınırı (32) aşıldı'
+maxCharactersExceeded: "Maksimum karakter sınırı (32) aşıldı"
 htmlVariableInfoPopup: HTML değişkeni, sayfanın ham HTML içeriğini içerir. Bu değişkeni kullanan komutlar, seçim bağlam menüsünde görünmeyecektir.
 fullPageContentVariableInfoPopup: Sayfanın başlığı ve tüm görünür metni dahil olmak üzere tam sayfa içeriğini içerir. Bu değişkeni kullanan komutlar, seçim bağlam menüsünde görünmeyecektir.
 buyMeCoffee: Kahve Ismarla

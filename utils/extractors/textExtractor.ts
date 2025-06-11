@@ -1,4 +1,4 @@
-import { ExtractedContent } from '.';
+import { ExtractedContent } from ".";
 
 export async function extractText(): Promise<ExtractedContent> {
   // Get the active tab
@@ -6,10 +6,10 @@ export async function extractText(): Promise<ExtractedContent> {
 
   // Set processing title.
   const originalTitle = tab.title;
-  tab.title = i18n.t('processing');
+  tab.title = i18n.t("processing");
 
   if (!tab?.id) {
-    throw new Error('No active tab found');
+    throw new Error("No active tab found");
   }
 
   // Execute content script to extract the page content
@@ -23,7 +23,7 @@ export async function extractText(): Promise<ExtractedContent> {
   const scriptResult = result[0]?.result as GetTextFromDocResult | undefined;
 
   if (!scriptResult) {
-    throw new Error('Failed to extract content');
+    throw new Error("Failed to extract content");
   }
 
   // Set title back to normal.
@@ -33,7 +33,7 @@ export async function extractText(): Promise<ExtractedContent> {
     title: tab.title,
     ...scriptResult, // Now TypeScript knows this has content and rawHtml properties
     timestamp: new Date().toISOString(),
-    url: tab.url || '',
+    url: tab.url || "",
   };
 }
 
@@ -48,21 +48,21 @@ function getTextFromDoc(): GetTextFromDocResult {
   // Get the main content
   // First try to find article or main content areas
   const mainSelectors = [
-    'main',
-    'article',
+    "main",
+    "article",
     "[role='main']",
-    '.main-content',
-    '#main-content',
-    '.post-main',
+    ".main-content",
+    "#main-content",
+    ".post-main",
   ];
 
-  let content = '';
+  let content = "";
 
   // Try to find main content using selectors
   for (const selector of mainSelectors) {
     const element = document.querySelector(selector);
     if (element) {
-      content = element.textContent || '';
+      content = element.textContent || "";
       break;
     }
   }
@@ -71,15 +71,15 @@ function getTextFromDoc(): GetTextFromDocResult {
   if (!content) {
     // Remove common non-content elements
     const elementsToRemove = [
-      'header',
-      'footer',
-      'nav',
-      'aside',
-      'script',
-      'style',
-      'noscript',
-      'iframe',
-      'svg',
+      "header",
+      "footer",
+      "nav",
+      "aside",
+      "script",
+      "style",
+      "noscript",
+      "iframe",
+      "svg",
     ];
 
     // Clone body to avoid modifying the actual page
@@ -90,12 +90,12 @@ function getTextFromDoc(): GetTextFromDocResult {
       bodyClone.querySelectorAll(selector).forEach(el => el.remove());
     });
 
-    content = bodyClone.textContent || '';
+    content = bodyClone.textContent || "";
   }
 
   // Clean up the content
   content = content
-    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+    .replace(/\s+/g, " ") // Replace multiple spaces with single space
     .trim(); // Remove leading/trailing whitespace
 
   // Get the visible HTML content
@@ -103,19 +103,19 @@ function getTextFromDoc(): GetTextFromDocResult {
 
   // Remove non-visible elements
   const invisibleElementSelectors = [
-    'script',
-    'style',
-    'noscript',
-    'meta',
-    'link',
-    'template',
-    'iframe',
+    "script",
+    "style",
+    "noscript",
+    "meta",
+    "link",
+    "template",
+    "iframe",
     '[style*="display: none"]',
     '[style*="display:none"]',
     '[style*="visibility: hidden"]',
     '[style*="visibility:hidden"]',
-    '[hidden]',
-    'head',
+    "[hidden]",
+    "head",
   ];
 
   invisibleElementSelectors.forEach(selector => {
@@ -143,7 +143,7 @@ function getTextFromDoc(): GetTextFromDocResult {
   const rawHtml = visibleHtmlClone.outerHTML;
 
   // Get the full page content (title + all visible text)
-  const fullPageContent = `Title: ${document.title}\n\nContent:\n${visibleHtmlClone.textContent?.replace(/\s+/g, ' ').trim() || ''}`;
+  const fullPageContent = `Title: ${document.title}\n\nContent:\n${visibleHtmlClone.textContent?.replace(/\s+/g, " ").trim() || ""}`;
 
   return {
     content,

@@ -1,7 +1,7 @@
 /**
  * A simple utility to estimate token count for a text string
  * This is a rough approximation - actual token counts may vary by model
- * 
+ *
  * @param text The text to count tokens for
  * @returns Estimated token count
  */

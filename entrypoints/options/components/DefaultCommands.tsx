@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { type CommandList, DEFAULT_COMMANDS } from '@/config';
+import { useState, useEffect } from "react";
+import { type CommandList, DEFAULT_COMMANDS } from "@/config";
 import {
   useCommands,
   useDefaultPageCommand,
   useDefaultYoutubeCommand,
   useUpdateDefaultPageCommand,
   useUpdateDefaultYoutubeCommand,
-} from '../queries';
-import { InfoPopup } from '.';
-import { i18n } from '#i18n';
+} from "../queries";
+import { InfoPopup } from ".";
+import { i18n } from "#i18n";
 
 interface DefaultCommandsProps {
   userCommands?: CommandList;
@@ -22,13 +22,13 @@ export default function DefaultCommands({ userCommands: propUserCommands }: Defa
 
   // Log when the component is re-rendered with new commands
   useEffect(() => {
-    console.log('DefaultCommands re-rendered with:', {
+    console.log("DefaultCommands re-rendered with:", {
       userCommandsCount: Object.keys(userCommands).length,
       defaultCommandsCount: Object.keys(DEFAULT_COMMANDS).length,
     });
   }, [userCommands]);
-  const { data: defaultPageCommand = 'summarizeText' } = useDefaultPageCommand();
-  const { data: defaultYoutubeCommand = 'summarizeTranscript' } = useDefaultYoutubeCommand();
+  const { data: defaultPageCommand = "summarizeText" } = useDefaultPageCommand();
+  const { data: defaultYoutubeCommand = "summarizeTranscript" } = useDefaultYoutubeCommand();
   const { mutate: updateDefaultPageCommand } = useUpdateDefaultPageCommand();
   const { mutate: updateDefaultYoutubeCommand } = useUpdateDefaultYoutubeCommand();
 
@@ -42,11 +42,11 @@ export default function DefaultCommands({ userCommands: propUserCommands }: Defa
 
   // Filter commands by context
   const pageCommands = Object.entries(allCommands).filter(
-    ([_, command]) => (command as CommandList[string]).context === 'page'
+    ([_, command]) => (command as CommandList[string]).context === "page"
   );
 
   const youtubeCommands = Object.entries(allCommands).filter(
-    ([_, command]) => (command as CommandList[string]).context === 'youtube'
+    ([_, command]) => (command as CommandList[string]).context === "youtube"
   );
 
   // Update local state when query data changes
@@ -65,12 +65,12 @@ export default function DefaultCommands({ userCommands: propUserCommands }: Defa
       // Check if the currently selected page command still exists
       const pageCommandExists = Object.entries(allCommands).some(
         ([key, cmd]) =>
-          key === selectedPageCommand && (cmd as CommandList[string]).context === 'page'
+          key === selectedPageCommand && (cmd as CommandList[string]).context === "page"
       );
 
       if (!pageCommandExists && pageCommands.length > 0) {
         const [firstKey] = pageCommands[0];
-        console.log('Updating page command to:', firstKey);
+        console.log("Updating page command to:", firstKey);
         setSelectedPageCommand(firstKey);
         updateDefaultPageCommand(firstKey);
       }
@@ -78,12 +78,12 @@ export default function DefaultCommands({ userCommands: propUserCommands }: Defa
       // Check if the currently selected YouTube command still exists
       const youtubeCommandExists = Object.entries(allCommands).some(
         ([key, cmd]) =>
-          key === selectedYoutubeCommand && (cmd as CommandList[string]).context === 'youtube'
+          key === selectedYoutubeCommand && (cmd as CommandList[string]).context === "youtube"
       );
 
       if (!youtubeCommandExists && youtubeCommands.length > 0) {
         const [firstKey] = youtubeCommands[0];
-        console.log('Updating youtube command to:', firstKey);
+        console.log("Updating youtube command to:", firstKey);
         setSelectedYoutubeCommand(firstKey);
         updateDefaultYoutubeCommand(firstKey);
       }
@@ -121,21 +121,21 @@ export default function DefaultCommands({ userCommands: propUserCommands }: Defa
   return (
     <div className="mt-8">
       <div className="flex items-center gap-2 mb-4">
-        <h2 className="text-2xl font-medium">{i18n.t('defaultCommandsTitle')}</h2>
-        <InfoPopup content={i18n.t('defaultCommandsInfoPopup')} />
+        <h2 className="text-2xl font-medium">{i18n.t("defaultCommandsTitle")}</h2>
+        <InfoPopup content={i18n.t("defaultCommandsInfoPopup")} />
       </div>
 
       <div className="space-y-4">
         {/* Page Commands */}
         <div className="p-4 border border-foreground/20 bg-foreground/5 rounded">
-          <h3 className="text-lg font-medium mb-3">{i18n.t('pageCommandTitle')}</h3>
+          <h3 className="text-lg font-medium mb-3">{i18n.t("pageCommandTitle")}</h3>
           <select
             value={
               pageCommands.some(([k]) => k === selectedPageCommand)
                 ? selectedPageCommand
                 : pageCommands.length > 0
                   ? pageCommands[0][0]
-                  : ''
+                  : ""
             }
             onChange={handlePageCommandChange}
             className="border border-foreground/20 bg-background text-foreground px-3 py-2.5 rounded text-lg cursor-pointer h-[52px] w-full"
@@ -150,14 +150,14 @@ export default function DefaultCommands({ userCommands: propUserCommands }: Defa
 
         {/* YouTube Commands */}
         <div className="p-4 border border-foreground/20 bg-foreground/5 rounded">
-          <h3 className="text-lg font-medium mb-3">{i18n.t('youtubeCommandTitle')}</h3>
+          <h3 className="text-lg font-medium mb-3">{i18n.t("youtubeCommandTitle")}</h3>
           <select
             value={
               youtubeCommands.some(([k]) => k === selectedYoutubeCommand)
                 ? selectedYoutubeCommand
                 : youtubeCommands.length > 0
                   ? youtubeCommands[0][0]
-                  : ''
+                  : ""
             }
             onChange={handleYoutubeCommandChange}
             className="border border-foreground/20 bg-background text-foreground px-3 py-2.5 rounded text-lg cursor-pointer h-[52px] w-full"

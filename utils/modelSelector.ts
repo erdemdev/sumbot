@@ -1,6 +1,6 @@
-import { models, type ModelDetails, type ModelName } from '@/config';
-import { STORAGE_KEYS, getStorageItemSafe } from '@/utils/storage';
-import { estimateTokenCount } from '@/utils/tokenCounter';
+import { models, type ModelDetails, type ModelName } from "@/config";
+import { STORAGE_KEYS, getStorageItemSafe } from "@/utils/storage";
+import { estimateTokenCount } from "@/utils/tokenCounter";
 
 /**
  * Selects the appropriate model based on text content, command conditions, and optional override
@@ -36,7 +36,7 @@ export async function selectModel(
       // Find the first condition where token count exceeds the threshold
       for (const condition of sortedConditions) {
         if (tokenCount > condition.tokenThreshold) {
-          const overrideMsg = modelOverride ? ` (overriding command model: ${modelOverride})` : '';
+          const overrideMsg = modelOverride ? ` (overriding command model: ${modelOverride})` : "";
           console.log(
             `Token count ${tokenCount} exceeds threshold ${condition.tokenThreshold}, ` +
               `using alternative model: ${condition.alternativeModel}${overrideMsg}`

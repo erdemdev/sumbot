@@ -1,11 +1,11 @@
-import { type ModelDetails } from '@/config';
-import { browser } from 'wxt/browser';
+import { type ModelDetails } from "@/config";
+import { browser } from "wxt/browser";
 
 export async function submitPromptToTextarea(
   promptText: string,
   model: ModelDetails
 ): Promise<void> {
-  console.log('Executing script in the tab');
+  console.log("Executing script in the tab");
 
   // Function to find element with indefinite retries
   const findElement = async <T extends Element>(
@@ -31,43 +31,43 @@ export async function submitPromptToTextarea(
   };
 
   // Find input element with retries
-  console.log('Searching for input element...');
+  console.log("Searching for input element...");
   const inputEl = await findElement<HTMLTextAreaElement | HTMLParagraphElement>(
     model.input,
-    'input'
+    "input"
   );
 
-  console.log('Found input element, setting value', inputEl);
+  console.log("Found input element, setting value", inputEl);
 
   // Set value based on element type
   switch (true) {
     case inputEl instanceof HTMLTextAreaElement:
-      console.log('Setting value for HTMLTextAreaElement');
+      console.log("Setting value for HTMLTextAreaElement");
       inputEl.value = promptText;
       break;
     case inputEl instanceof HTMLParagraphElement:
-      console.log('Setting innerText for HTMLParagraphElement');
+      console.log("Setting innerText for HTMLParagraphElement");
       inputEl.innerText = promptText;
       break;
     default:
-      console.error('Unexpected element type:', inputEl);
-      throw new Error('Unexpected element type');
+      console.error("Unexpected element type:", inputEl);
+      throw new Error("Unexpected element type");
   }
 
   // Dispatch input event to trigger any listeners
-  const inputEvent = new Event('input', { bubbles: true });
+  const inputEvent = new Event("input", { bubbles: true });
   inputEl.dispatchEvent(inputEvent);
 
-  console.log('Set input value and dispatched input event');
+  console.log("Set input value and dispatched input event");
 
   // Wait for 1 second for UI changes
   await new Promise(resolve => setTimeout(resolve, 1000));
 
   // Find button element with retries
-  console.log('Searching for button element...');
-  const buttonEl = await findElement<HTMLButtonElement>(model.button, 'button');
+  console.log("Searching for button element...");
+  const buttonEl = await findElement<HTMLButtonElement>(model.button, "button");
 
-  console.log('Found button element, clicking', buttonEl);
+  console.log("Found button element, clicking", buttonEl);
   buttonEl.click();
 
   // Wait for 1 second
@@ -77,16 +77,16 @@ export async function submitPromptToTextarea(
   if (model.cleanInput) {
     const cleanInterval = setInterval(() => {
       switch (true) {
-        case inputEl instanceof HTMLTextAreaElement && inputEl.value !== '':
-          inputEl.value = '';
+        case inputEl instanceof HTMLTextAreaElement && inputEl.value !== "":
+          inputEl.value = "";
           break;
-        case inputEl instanceof HTMLParagraphElement && inputEl.innerText !== '':
-          inputEl.innerText = '';
+        case inputEl instanceof HTMLParagraphElement && inputEl.innerText !== "":
+          inputEl.innerText = "";
           break;
         case !(inputEl instanceof HTMLTextAreaElement || inputEl instanceof HTMLParagraphElement):
-          console.error('Unexpected element type:', inputEl);
+          console.error("Unexpected element type:", inputEl);
           clearInterval(cleanInterval);
-          throw new Error('Unexpected element type');
+          throw new Error("Unexpected element type");
         default:
           clearInterval(cleanInterval);
       }
@@ -119,7 +119,7 @@ export async function submitPrompt(text: string, model: ModelDetails): Promise<v
           // Remove the listener right away to prevent it from firing again
           browser.webNavigation.onDOMContentLoaded.removeListener(handleDOMContentLoaded);
 
-          console.log('DOM content loaded, waiting before executing script');
+          console.log("DOM content loaded, waiting before executing script");
 
           // Wait for 1000 ms to ensure page is fully ready
           await new Promise(resolve => setTimeout(resolve, 1000));
@@ -132,12 +132,12 @@ export async function submitPrompt(text: string, model: ModelDetails): Promise<v
               args: [text, model],
             });
           } else {
-            throw new Error('Tab ID is undefined');
+            throw new Error("Tab ID is undefined");
           }
 
           resolve();
         } catch (error) {
-          console.error('Error executing script:', error);
+          console.error("Error executing script:", error);
           // Remove the listener in case of error too
           browser.webNavigation.onDOMContentLoaded.removeListener(handleDOMContentLoaded);
           reject(error);
@@ -147,7 +147,7 @@ export async function submitPrompt(text: string, model: ModelDetails): Promise<v
       // Add the one-time event listener
       browser.webNavigation.onDOMContentLoaded.addListener(handleDOMContentLoaded);
     } catch (error) {
-      console.error('Error in submitPrompt:', error);
+      console.error("Error in submitPrompt:", error);
       reject(error);
     }
   });

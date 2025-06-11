@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { type ModelName, models } from '@/config';
-import { STORAGE_KEYS, getStorageItemSafe, setStorageItemSafe } from '@/utils/storage';
-import { i18n } from '#i18n';
-import { submitPrompt } from '@/utils/promptSubmitter';
+import { useEffect, useState } from "react";
+import { type ModelName, models } from "@/config";
+import { STORAGE_KEYS, getStorageItemSafe, setStorageItemSafe } from "@/utils/storage";
+import { i18n } from "#i18n";
+import { submitPrompt } from "@/utils/promptSubmitter";
 
 interface ModelSelectorProps {
   className?: string;
 }
 
-const ModelSelector = ({ className = '' }: ModelSelectorProps) => {
+const ModelSelector = ({ className = "" }: ModelSelectorProps) => {
   const [selectedModel, setSelectedModel] = useState<ModelName>(
     Object.keys(models)[0] as ModelName
   );
@@ -21,7 +21,7 @@ const ModelSelector = ({ className = '' }: ModelSelectorProps) => {
           setSelectedModel(modelResult);
         }
       } catch (error) {
-        console.error('Failed to load model:', error);
+        console.error("Failed to load model:", error);
       }
     };
 
@@ -35,12 +35,12 @@ const ModelSelector = ({ className = '' }: ModelSelectorProps) => {
     try {
       await setStorageItemSafe(STORAGE_KEYS.DEFAULT_MODEL, newModel);
     } catch (error) {
-      console.error('Failed to save selected model:', error);
+      console.error("Failed to save selected model:", error);
     }
   };
 
   const handleTestAllModels = async () => {
-    const testText = 'Test';
+    const testText = "Test";
     await Promise.all(
       Object.keys(models).map(async modelKey => {
         try {
@@ -55,8 +55,8 @@ const ModelSelector = ({ className = '' }: ModelSelectorProps) => {
   return (
     <div className={`${className}`}>
       <div className="flex items-center gap-2 mb-2">
-        <h2 className="text-2xl font-medium">{i18n.t('modelSectionTitle')}</h2>
-        {process.env.NODE_ENV === 'development' && (
+        <h2 className="text-2xl font-medium">{i18n.t("modelSectionTitle")}</h2>
+        {process.env.NODE_ENV === "development" && (
           <button
             onClick={handleTestAllModels}
             className="p-1.5 rounded transition-opacity opacity-70 hover:opacity-100 cursor-pointer"

@@ -1,7 +1,7 @@
-import { DEFAULT_COMMANDS, DEFAULT_VARIABLES, type CommandList } from '@/config';
-import { type ExtractedContent } from '@/utils/extractors';
-import { STORAGE_KEYS, getStorageItemSafe } from '@/utils/storage';
-import { isYouTube } from '@/utils/url';
+import { DEFAULT_COMMANDS, DEFAULT_VARIABLES, type CommandList } from "@/config";
+import { type ExtractedContent } from "@/utils/extractors";
+import { STORAGE_KEYS, getStorageItemSafe } from "@/utils/storage";
+import { isYouTube } from "@/utils/url";
 
 /**
  * Gets a command prompt template safely with type checking
@@ -26,7 +26,7 @@ export async function generatePrompt(
   useDefaultPrompt = false
 ): Promise<string> {
   // Get either the default command or the user's custom command based on the toggle
-  let promptTemplate = '';
+  let promptTemplate = "";
 
   if (useDefaultPrompt) {
     // Use default prompt if it exists, otherwise fall back to appropriate context-based default
@@ -50,12 +50,12 @@ export async function generatePrompt(
 
   // First, replace the content placeholders with extracted data
   let prompt = promptTemplate
-    .replace(/{{content}}/g, data.content || '')
-    .replace(/{{title}}/g, data.title || '')
-    .replace(/{{timestamp}}/g, data.timestamp || '')
-    .replace(/{{url}}/g, data.url || '')
-    .replace(/{{html}}/g, data.rawHtml || '')
-    .replace(/{{fullPageContent}}/g, data.fullPageContent || '');
+    .replace(/{{content}}/g, data.content || "")
+    .replace(/{{title}}/g, data.title || "")
+    .replace(/{{timestamp}}/g, data.timestamp || "")
+    .replace(/{{url}}/g, data.url || "")
+    .replace(/{{html}}/g, data.rawHtml || "")
+    .replace(/{{fullPageContent}}/g, data.fullPageContent || "");
 
   // Then, replace user-defined variables
   const userVariables = await getStorageItemSafe(STORAGE_KEYS.USER_GENERATED_VARIABLES);
@@ -65,7 +65,7 @@ export async function generatePrompt(
 
   // Replace all variable placeholders with their values
   for (const [key, value] of Object.entries(allVariables)) {
-    const regex = new RegExp(`{{${key}}}`, 'g');
+    const regex = new RegExp(`{{${key}}}`, "g");
     prompt = prompt.replace(regex, value);
   }
 

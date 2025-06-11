@@ -10,12 +10,12 @@ All storage keys are defined in the `STORAGE_KEYS` enum in `utils/storage.ts`:
 
 ```typescript
 export enum STORAGE_KEYS {
-  DEFAULT_MODEL = '0',
-  USER_GENERATED_COMMANDS = '1',
-  USER_GENERATED_VARIABLES = '2',
-  COMMAND_TIMESTAMPS = '3',
-  DEFAULT_PAGE_COMMAND = '4',
-  DEFAULT_YOUTUBE_COMMAND = '5',
+  DEFAULT_MODEL = "0",
+  USER_GENERATED_COMMANDS = "1",
+  USER_GENERATED_VARIABLES = "2",
+  COMMAND_TIMESTAMPS = "3",
+  DEFAULT_PAGE_COMMAND = "4",
+  DEFAULT_YOUTUBE_COMMAND = "5",
 }
 ```
 
@@ -90,7 +90,7 @@ Resets all storage values to their defaults and reloads the current page to prov
 Always use the safe helper function to read values from storage:
 
 ```typescript
-import { STORAGE_KEYS, getStorageItemSafe } from '@/utils/storage';
+import { STORAGE_KEYS, getStorageItemSafe } from "@/utils/storage";
 
 // Safe reading with validation and reset if invalid
 const modelKey = await getStorageItemSafe(STORAGE_KEYS.DEFAULT_MODEL);
@@ -101,10 +101,10 @@ const modelKey = await getStorageItemSafe(STORAGE_KEYS.DEFAULT_MODEL);
 Always use the safe helper function to write values to storage:
 
 ```typescript
-import { STORAGE_KEYS, setStorageItemSafe } from '@/utils/storage';
+import { STORAGE_KEYS, setStorageItemSafe } from "@/utils/storage";
 
 // Safe writing with validation and reset if invalid
-await setStorageItemSafe(STORAGE_KEYS.DEFAULT_MODEL, 'ChatGPT');
+await setStorageItemSafe(STORAGE_KEYS.DEFAULT_MODEL, "ChatGPT");
 ```
 
 ### Error Handling
@@ -116,7 +116,7 @@ try {
   const modelKey = await getStorageItemSafe(STORAGE_KEYS.DEFAULT_MODEL);
   // Use the value
 } catch (error) {
-  console.error('Storage operation failed:', error);
+  console.error("Storage operation failed:", error);
   // The page will be reloaded automatically if the error was due to invalid data
 }
 ```

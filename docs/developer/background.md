@@ -27,10 +27,11 @@ let processingTabs = new Set<number>();
 The `setIconState` function manages the extension icon's appearance based on the current state:
 
 ```typescript
-async function setIconState(state: IconStateType, tabId?: number): Promise<void>
+async function setIconState(state: IconStateType, tabId?: number): Promise<void>;
 ```
 
 - **States**:
+
   - `default`: Normal state, icon is enabled
   - `processing`: Shows the processing icon and disables the browser action
   - `disabled`: Disables the browser action without changing the icon
@@ -42,7 +43,7 @@ async function setIconState(state: IconStateType, tabId?: number): Promise<void>
 The `processTab` function is the main workflow for handling browser action clicks:
 
 ```typescript
-async function processTab(tab: chrome.tabs.Tab): Promise<void>
+async function processTab(tab: chrome.tabs.Tab): Promise<void>;
 ```
 
 1. Prevents duplicate processing of the same tab
@@ -59,7 +60,7 @@ async function processTab(tab: chrome.tabs.Tab): Promise<void>
 The `handleUrlParameters` function detects and processes the `sumbot_prompt` URL parameter:
 
 ```typescript
-async function handleUrlParameters(tab: { url?: string; id?: number }): Promise<void>
+async function handleUrlParameters(tab: { url?: string; id?: number }): Promise<void>;
 ```
 
 1. Checks if the current tab is a supported AI model website
@@ -72,10 +73,11 @@ async function handleUrlParameters(tab: { url?: string; id?: number }): Promise<
 The script dynamically creates and manages context menus based on user-defined commands:
 
 ```typescript
-async function createDynamicContextMenus(): Promise<void>
+async function createDynamicContextMenus(): Promise<void>;
 ```
 
 - Creates parent menus for different contexts:
+
   - Selection context (for selected text)
   - Page context (for regular web pages)
   - YouTube context (only visible on YouTube)
@@ -92,7 +94,7 @@ The `handleContextMenuClick` function processes user interactions with context m
 async function handleContextMenuClick(
   info: chrome.contextMenus.OnClickData,
   tab?: chrome.tabs.Tab
-): Promise<void>
+): Promise<void>;
 ```
 
 1. Determines the command and context from the clicked menu item
@@ -109,7 +111,7 @@ async function handleContextMenuClick(
 The `getCommandKey` function determines which command to use based on the content type:
 
 ```typescript
-async function getCommandKey(data: Partial<ExtractedContent>): Promise<string>
+async function getCommandKey(data: Partial<ExtractedContent>): Promise<string>;
 ```
 
 - Returns the default YouTube command for YouTube content
@@ -216,9 +218,9 @@ The script implements comprehensive error handling:
 The script includes extensive logging to aid in debugging:
 
 ```typescript
-console.log('Extension clicked - starting process');
-console.log('Starting content extraction');
-console.log('Submitting content to promptSubmitter');
+console.log("Extension clicked - starting process");
+console.log("Starting content extraction");
+console.log("Submitting content to promptSubmitter");
 // ...
 ```
 
