@@ -76,7 +76,9 @@ export const models = {
   Grok: {
     url: "https://x.com/i/grok",
     input: ["div div div textarea"],
-    button: ["button:has(rect)"],
+    button: [
+      "div + div > button:has(path[d='M12 3.59l7.457 7.45-1.414 1.42L13 7.41V21h-2V7.41l-5.043 5.05-1.414-1.42L12 3.59z'])",
+    ],
   },
   Gemini: {
     url: "https://aistudio.google.com/prompts/new_chat",
