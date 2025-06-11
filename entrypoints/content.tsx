@@ -38,5 +38,7 @@ export default defineContentScript({
         ui.remove();
       }
     });
+
+    onMessage("showAlert", async message => alert(message.data));
   },
 });

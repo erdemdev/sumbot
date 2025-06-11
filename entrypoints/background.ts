@@ -66,6 +66,11 @@ async function processTab(tab: chrome.tabs.Tab): Promise<void> {
     // Check if the URL is from YouTube using the shared utility function
     const data = isYouTube(tab.url) ? await extractYoutubeTranscript() : await extractText();
 
+    if (data.content.length === 0) {
+      sendMessage("showAlert", i18n.t("noContentExtracted"), tab.id && { tabId: tab.id });
+      throw new Error("No content extracted");
+    }
+
     console.log("Submitting content to promptSubmitter");
     const commandKey = await getCommandKey(data);
     const promptText = await generatePrompt(data, commandKey);
@@ -305,6 +310,11 @@ async function handleContextMenuClick(
         data = await extractYoutubeTranscript();
       } else {
         data = await extractText();
+      }
+
+      if (data.content.length === 0) {
+        sendMessage("showAlert", i18n.t("noContentExtracted"), tab.id && { tabId: tab.id });
+        throw new Error("No content extracted");
       }
 
       // Generate prompt using the specific command
