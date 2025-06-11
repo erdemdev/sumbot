@@ -1,35 +1,35 @@
-import { getSubtitles } from 'youtube-caption-extractor';
-import { ExtractedContent } from '.';
+import TranscriptAPI from "youtube-transcript-api";
+import { ExtractedContent } from ".";
 
 export async function extractYoutubeTranscript(): Promise<ExtractedContent> {
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
 
   if (!tab?.id || !tab.url) {
-    throw new Error('No active tab or URL found');
+    throw new Error("No active tab or URL found");
   }
 
   try {
     // Extract video ID from URL
     const videoId = extractVideoId(tab.url);
     if (!videoId) {
-      throw new Error('Could not extract YouTube video ID');
+      throw new Error("Could not extract YouTube video ID");
     }
 
     // Fetch transcript with timestamps
-    const captions = await getSubtitles({ videoID: videoId });
+    const captions = await TranscriptAPI.getTranscript(videoId);
 
     // Format content with timestamps
     const content = captions
-      .map((entry: { start: string; dur: string; text: string }) => {
+      .map((entry: { start: string; duration: string; text: string }) => {
         const startTime = parseFloat(entry.start);
-        const duration = parseFloat(entry.dur);
+        const duration = parseFloat(entry.duration);
         const endTime = startTime + duration;
 
         // Format: [MM:SS-MM:SS] Text
         return `[${formatTime(startTime)}-${formatTime(endTime)}] ${entry.text}`;
       })
-      .join('\n')
-      .replace(/&amp;#39;/g, '')
+      .join("\n")
+      .replace(/&amp;#39;/g, "")
       .trim();
 
     // Get the page title using scripting API
@@ -38,19 +38,19 @@ export async function extractYoutubeTranscript(): Promise<ExtractedContent> {
       func: () => document.title,
     });
 
-    const title = titleResult[0]?.result || '';
+    const title = String(titleResult[0]?.result);
 
     return {
       title,
-      content: content || '',
+      content: content || "",
       timestamp: new Date().toISOString(),
       url: tab.url,
     };
   } catch (error) {
-    console.error('Failed to extract YouTube transcript:', error);
+    console.error("Failed to extract YouTube transcript:", error);
     return {
-      title: '',
-      content: '',
+      title: "",
+      content: "",
       timestamp: new Date().toISOString(),
       url: tab.url,
     };
@@ -68,5 +68,5 @@ function extractVideoId(url: string): string | null {
 function formatTime(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 }
